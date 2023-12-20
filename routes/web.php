@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ListController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::view('/', 'welcome');
+Route::resource('affairs', ListController::class);
+
+Route::view('dashboard', 'dashboard')
+     ->middleware(['auth', 'verified'])
+     ->name('dashboard');
+
+Route::view('profile', 'profile')
+    ->middleware(['auth'])
+    ->name('profile');
+
+
+    Route::get('/', 'ListController@index')->name('affairs.index');
+    Route::delete('/affairs/{id}', 'ListController@destroy')
+        ->name('affairs.destroy');
+
+require __DIR__.'/auth.php';
