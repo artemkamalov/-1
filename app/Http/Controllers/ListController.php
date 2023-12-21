@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreList;
 use App\Models\ToDo;
 
 class ListController extends Controller
@@ -27,9 +28,10 @@ class ListController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreList $request)
     {
-        //
+        ToDo::create($request->validated());
+        return redirect()->back();
     }
 
     /**
@@ -53,7 +55,9 @@ class ListController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        // $affairs = ToDo::where($id)->update(['record'=>1]);
+        // return redirect()->back();
     }
 
     /**
@@ -61,7 +65,7 @@ class ListController extends Controller
      */
     public function destroy(string $id)
     {
-        $affairs = ToDo::where('id', 1)->delete();
-        return redirect()->route('affairs.index');
+        $affairs = ToDo::findOrFail($id)->delete();
+        return redirect()->back();
     }
 }
